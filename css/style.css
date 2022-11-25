@@ -1,12 +1,12 @@
 * {
-    margin: 0;
-    padding: 0;
+    margin: 0px;
+    padding: 0px;
     box-sizing: border-box;
 }
 
 body {
     background-color: #1a191f;
-    font-family: "Roboto", sans-serif;
+    font-family: "Open Sans", sans-serif;
 }
 
 .container {
@@ -16,8 +16,8 @@ body {
 
 .header__content {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
     padding: 16px;
     height: 60px;
 }

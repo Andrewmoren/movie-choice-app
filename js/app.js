@@ -129,7 +129,7 @@ function closeModal() {
   document.body.classList.remove("stop-scrolling");
 }
 
-// закрытие нажатием на весь
+// закрытие нажатием на весь экран
 window.addEventListener("click", (e) => {
   if (e.target === modalEl) {
     closeModal();

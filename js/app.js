@@ -32,7 +32,7 @@ const getClassByRate = (vote) => {
 const showMovies = (data) => {
   const moviesEl = document.querySelector(".movies");
 
-  //   очистка предыдущих
+  //   очистка предыдущих фильмов
   document.querySelector(".movies").innerHTML = "";
 
   data.films.forEach((mov) => {

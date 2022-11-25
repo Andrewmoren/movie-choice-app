@@ -6,6 +6,8 @@ const API_URL =
 const API_URL_SEARCH =
   "https://kinopoiskapiunofficial.tech/api/v2.1/films/search-by-keyword?keyword=";
 
+const API_URL_MOVIE_DETAILS =
+  "https://kinopoiskapiunofficial.tech/api/v2.2/films/";
 const getMovies = async (url) => {
   const res = await fetch(url, {
     headers: {
@@ -61,6 +63,7 @@ const showMovies = (data) => {
     }
   </div>
     `;
+    movieEl.addEventListener("click", () => openModal(mov.filmId));
     moviesEl.appendChild(movieEl);
   });
 };
@@ -76,5 +79,66 @@ form.addEventListener("submit", (e) => {
     getMovies(apiSearchUrl);
 
     search.value = "";
+  }
+});
+
+// Modal
+
+const modalEl = document.querySelector(".modal");
+
+async function openModal(id) {
+  const res = await fetch(API_URL_MOVIE_DETAILS + id, {
+    headers: {
+      "Content-Type": "application/json",
+      "X-API-KEY": API_KEY,
+    },
+  });
+  const data = await res.json();
+
+  modalEl.classList.add("modal--show");
+  document.body.classList.add("stop-scrolling");
+
+  modalEl.innerHTML = `
+    <div class="modal__card">
+      <img class="modal__movie-backdrop" src="${data.posterUrl}" alt="">
+      <h2>
+        <span class="modal__movie-title">${data.nameRu}</span>
+        <span class="modal__movie-release-year">${data.year}</span>
+      </h2>
+      <ul class="modal__movie-info">
+        <div class="loader"></div>
+        <li class="modal__movie-genre">${data.genres.map(
+          (genre) => ` ${genre.genre}`
+        )}</li>
+        <li class="modal__movie-runtime">${data.filmLength}  минут </li>
+        <li >Сайт: <a class="modal__movie-site" href="${data.webUrl}">${
+    data.webUrl
+  }</a></li>
+        <li class="modal__movie-overview">${data.description}</li>
+      </ul>
+      <button type="button" class="modal__button-close">Закрыть</button>
+    </div>
+`;
+
+  const btnClose = document.querySelector(".modal__button-close");
+  btnClose.addEventListener("click", () => closeModal());
+}
+
+function closeModal() {
+  modalEl.classList.remove("modal--show");
+  document.body.classList.remove("stop-scrolling");
+}
+
+// закрытие нажатием на весь
+window.addEventListener("click", (e) => {
+  if (e.target === modalEl) {
+    closeModal();
+  }
+});
+
+// закрытие нажатием на esc
+window.addEventListener("keydown", (e) => {
+  if (e.keyCode === 27) {
+    closeModal();
   }
 });
